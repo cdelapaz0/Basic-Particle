@@ -1,28 +1,27 @@
 #include "Input.h"
+#include "WindowsInclude.h"
 
+KeyBoardState Input::curr;
+KeyBoardState Input::prev;
 
-Input::Input() {
+bool Input::KeyDown(unsigned int key)
+{
+	return curr[key];
 }
 
-
-Input::~Input() {
+bool Input::KeyPressed(unsigned int key)
+{
+	return (curr[key] && !prev[key]);
 }
 
-void Input::Initialize() {
-	for ( int i = 0; i < 256; ++i )
+void Input::Update()
+{
+	bool keys[256];
+	for (int i = 0; i < 256; ++i)
 	{
-		keys[i] = false;
+		keys[i] = (GetAsyncKeyState(i) != 0);
 	}
-}
 
-void Input::KeyDown( unsigned int keyCode ) {
-	keys[keyCode] = true;
-}
-
-void Input::KeyUp( unsigned int keyCode ) {
-	keys[keyCode] = false;
-}
-
-bool Input::IsKeyDown( unsigned int keyCode ) {
-	return keys[keyCode];
+	prev = curr;
+	curr.SetKeys(keys, 256);
 }

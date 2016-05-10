@@ -19,7 +19,7 @@ public:
 	bool Frame();
 
 private:
-	bool Render(float rotation);
+	bool Render();
 
 private:
 	D3D* d3d;

@@ -1,20 +1,18 @@
 #pragma once
 
+#include "KeyBoardState.h"
+
 class Input
 {
-public:
-	Input();
-	~Input();
-
-	void Initialize();
-
-	void KeyDown( unsigned int keyCode );
-	void KeyUp( unsigned int keyCode );
-
-	bool IsKeyDown( unsigned int keyCode );
-
 private:
-	bool keys[256];
+	static KeyBoardState curr;
+	static KeyBoardState prev;
 
+public:
+	
+	static void Update();
+
+	static bool KeyDown(unsigned int key);
+	static bool KeyPressed(unsigned int key);
 };
 

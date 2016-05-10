@@ -148,6 +148,7 @@
     <ClCompile Include="Source\D3D.cpp" />
     <ClCompile Include="Source\Graphics.cpp" />
     <ClCompile Include="Source\Input.cpp" />
+    <ClCompile Include="Source\KeyBoardState.cpp" />
     <ClCompile Include="Source\Utilities.cpp" />
     <ClCompile Include="Source\WinMain.cpp" />
   </ItemGroup>
@@ -158,6 +159,7 @@
     <ClInclude Include="Source\DXTKInclude.h" />
     <ClInclude Include="Source\Graphics.h" />
     <ClInclude Include="Source\Input.h" />
+    <ClInclude Include="Source\KeyBoardState.h" />
     <ClInclude Include="Source\Utilities.h" />
     <ClInclude Include="Source\WindowsInclude.h" />
     <ClInclude Include="Source\WinMain.h" />

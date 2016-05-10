@@ -36,14 +36,12 @@ void Graphics::Shutdown() {
 
 bool Graphics::Frame() {
 
-	Render(0.0f);
+	Render();
 	return true;
 }
 
-bool Graphics::Render( float rotation ) {
+bool Graphics::Render( ) {
 	Matrix viewMatrix, projectionMatrix, worldMatrix;
-	bool result;
-
 
 	// Clear the buffers to begin the scene.
 	d3d->BeginScene( 1.0f, 0.0f, 0.0f, 1.0f );

@@ -1,7 +1,6 @@
 #pragma once
 
 #include <Windows.h>
-#include "Input.h"
 #include "Graphics.h"
 
 class App
@@ -18,7 +17,10 @@ public:
 									 WPARAM wParam, LPARAM lParam );
 
 private:
-	bool Frame();
+	//void Input();
+	bool Update();
+	bool Render();
+
 	void InitWindow( int& _width, int& _height );
 	void ShutWindow();
 
@@ -28,7 +30,6 @@ private:
 	HWND		hWnd;
 
 	Graphics*	graphics;
-	Input*		input;
 };
 
 static LRESULT CALLBACK WndProc( HWND hWnd, UINT message,

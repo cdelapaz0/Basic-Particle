@@ -1,16 +1,20 @@
 //#include "stdafx.h"
 #include "App.h"
+#include "Input.h"
 
 
-App::App() {
-	input = nullptr;
+App::App() 
+{
 	graphics = nullptr;
 }
 
-App::~App() {
+App::~App() 
+{
+
 }
 
-bool App::Initialize() {
+bool App::Initialize() 
+{
 	int width, height;
 	bool result;
 
@@ -18,83 +22,91 @@ bool App::Initialize() {
 
 	InitWindow( width, height );
 
-	input = new Input;
-	if ( !input ) {
-		return false;
-	}
-
-	input->Initialize();
-
 	graphics = new Graphics;
-	if ( !graphics ) {
+	if ( !graphics ) 
+	{
 		return false;
 	}
 
 	result = graphics->Initialize( width, height, hWnd );
-	if ( !result ) {
+	if ( !result ) 
+	{
 		return false;
 	}
 
 	return true;
 }
 
-void App::Shutdown() {
-	if ( graphics ) {
+void App::Shutdown() 
+{
+	if ( graphics ) 
+	{
 		graphics->Shutdown();
 		delete graphics;
 		graphics = nullptr;
 	}
 
-	if ( input ) {
-		delete input;
-		input = nullptr;
-	}
-
 	ShutWindow();
 }
 
-void App::Run() {
+void App::Run() 
+{
 	MSG msg;
-	bool done, result;
+	bool done;
 
 	ZeroMemory( &msg, sizeof( MSG ) );
 
 	done = false;
 
-	while ( !done ) {
-		if ( PeekMessage( &msg, NULL, 0, 0, PM_REMOVE ) ) {
+	while ( !done ) 
+	{
+		if ( PeekMessage( &msg, NULL, 0, 0, PM_REMOVE ) ) 
+		{
 			TranslateMessage( &msg );
 			DispatchMessage( &msg );
 		}
 
-		if ( msg.message == WM_QUIT ) {
+		if ( msg.message == WM_QUIT )
+		{
 			done = true;
 		}
-		else {
-			result = Frame();
-			if ( !result ) {
+		else 
+		{
+			if ( !Update() )
 				done = true;
-			}
+
+			if ( !Render() )
+				done = true;
 		}
 	}
 }
 
-bool App::Frame() {
-	bool result;
-
-	if ( input->IsKeyDown( VK_ESCAPE ) ) {
-		return false;
-	}
-
-	result = graphics->Frame();
-	if ( !result ) {
+bool App::Update()
+{
+	Input::Update();
+	if (Input::KeyDown(VK_ESCAPE))
+	{
 		return false;
 	}
 
 	return true;
 }
 
-void App::InitWindow( int& _width, int& _height ) {
+bool App::Render()
+{
+	bool result;
+
+	result = graphics->Frame();
+	if (!result) 
+	{
+		return false;
+	}
+
+	return true;
+}
+
+void App::InitWindow( int& _width, int& _height ) 
+{
 	WNDCLASSEX wc;
 	DEVMODE dmScreenSettings;
 	int posX, posY;
@@ -103,7 +115,7 @@ void App::InitWindow( int& _width, int& _height ) {
 
 	hInstance = GetModuleHandle( NULL );
 
-	appName = L"Engine";
+	appName = L"SX1";
 
 	wc.style = CS_HREDRAW | CS_VREDRAW | CS_OWNDC;
 	wc.lpfnWndProc = WndProc;
@@ -123,7 +135,8 @@ void App::InitWindow( int& _width, int& _height ) {
 	_width = GetSystemMetrics( SM_CXSCREEN );
 	_height = GetSystemMetrics( SM_CYSCREEN );
 
-	if ( FULL_SCREEN ) {
+	if ( FULL_SCREEN )
+	{
 		memset( &dmScreenSettings, 0, sizeof( dmScreenSettings ) );
 		dmScreenSettings.dmSize = sizeof( dmScreenSettings );
 		dmScreenSettings.dmPelsWidth = (unsigned long)_width;
@@ -135,7 +148,8 @@ void App::InitWindow( int& _width, int& _height ) {
 
 		posX = posY = 0;
 	}
-	else {
+	else 
+	{
 		_width = 800;
 		_height = 600;
 
@@ -156,10 +170,12 @@ void App::InitWindow( int& _width, int& _height ) {
 	return;
 }
 
-void App::ShutWindow() {
+void App::ShutWindow() 
+{
 	//ShowCursor( true );
 
-	if ( FULL_SCREEN ) {
+	if ( FULL_SCREEN ) 
+	{
 		ChangeDisplaySettings( NULL, 0 );
 	}
 
@@ -174,12 +190,12 @@ void App::ShutWindow() {
 
 LRESULT CALLBACK App::MessageHandler( HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam ) {
 	switch ( message ) {
-		case WM_KEYDOWN:
-			input->KeyDown( (unsigned int)wParam );
-			return 0;
-		case WM_KEYUP:
-			input->KeyUp( (unsigned int)wParam );
-			return 0;
+		//case WM_KEYDOWN:
+		//	//input->KeyDown( (unsigned int)wParam );
+		//	return 0;
+		//case WM_KEYUP:
+		//	//input->KeyUp( (unsigned int)wParam );
+		//	return 0;
 		default:
 			return DefWindowProc( hWnd, message, wParam, lParam );
 	}
