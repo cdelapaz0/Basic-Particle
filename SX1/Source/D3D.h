@@ -14,6 +14,7 @@ public:
 					 float _depth, float _near );
 	void Shutdown();
 
+	void BeginScene( Color cc );
 	void BeginScene( float r, float g, float b, float a );
 	void EndScene();
 

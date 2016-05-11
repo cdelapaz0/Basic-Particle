@@ -22,10 +22,10 @@ bool D3D::Initialize( int _width, int _height, bool _vsync, HWND _hWnd, bool _fs
 	IDXGIFactory* factory;
 	IDXGIAdapter* adapter;
 	IDXGIOutput* adapterOutput;
-	unsigned int numModes, i, numerator, denominator, stringLength;
+	unsigned int numModes, i, numerator, denominator/*, stringLength*/;
 	DXGI_MODE_DESC* displayModeList;
 	DXGI_ADAPTER_DESC adapterDesc;
-	int error;
+	//int error;
 	DXGI_SWAP_CHAIN_DESC swapChainDesc;
 	D3D_FEATURE_LEVEL featureLevel;
 	ID3D11Texture2D* backBufferPtr;
@@ -350,21 +350,18 @@ void D3D::Shutdown() {
 	SAFE_RELEASE( swapChain );
 }
 
-void D3D::BeginScene( float r, float g, float b, float a ) {
-	float color[4];
-
-	// Setup the color to clear the buffer to.
-	color[0] = r;
-	color[1] = g;
-	color[2] = b;
-	color[3] = a;
-
+void D3D::BeginScene(Color cc)
+{
 	// Clear the back buffer.
-	deviceContext->ClearRenderTargetView( renderTargetView, color );
+	deviceContext->ClearRenderTargetView(renderTargetView, cc);
 
 	// Clear the depth buffer.
-	deviceContext->ClearDepthStencilView( depthStencilView, 
-										  D3D11_CLEAR_DEPTH, 1.0f, 0 );
+	deviceContext->ClearDepthStencilView(depthStencilView,
+		D3D11_CLEAR_DEPTH, 1.0f, 0);
+}
+
+void D3D::BeginScene( float r, float g, float b, float a ) {
+	BeginScene(Color(r, g, b, a));
 }
 
 void D3D::EndScene() {

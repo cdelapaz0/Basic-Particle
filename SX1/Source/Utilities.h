@@ -3,6 +3,8 @@
 #include <vector>
 #include <string>
 
+#include "DXTKInclude.h"
+
 
 #define SAFE_RELEASE(x)\
 { \
@@ -29,8 +31,19 @@
 	}\
 }
 
+namespace Random
+{
+	float NextFloat();
+	float NextFloat(float min, float max);
+}
 
-namespace String  {
+namespace ColorTools
+{
+	Color RandomColor();
+}
+
+namespace String  
+{
 
 	std::vector<std::wstring> Split( std::wstring str, const std::wstring& separator );
 

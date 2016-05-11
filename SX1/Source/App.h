@@ -1,7 +1,8 @@
 #pragma once
 
 #include <Windows.h>
-#include "Graphics.h"
+#include "D3D.h"
+#include "StateStack.h"
 
 class App
 {
@@ -17,11 +18,11 @@ public:
 									 WPARAM wParam, LPARAM lParam );
 
 private:
-	//void Input();
+	bool Input();
 	bool Update();
 	bool Render();
 
-	void InitWindow( int& _width, int& _height );
+	void InitWindow( int& _width, int& _height, bool _fs = false);
 	void ShutWindow();
 
 private:
@@ -29,7 +30,8 @@ private:
 	HINSTANCE	hInstance;
 	HWND		hWnd;
 
-	Graphics*	graphics;
+	D3D*		d3d;
+	StateStack  states;
 };
 
 static LRESULT CALLBACK WndProc( HWND hWnd, UINT message,

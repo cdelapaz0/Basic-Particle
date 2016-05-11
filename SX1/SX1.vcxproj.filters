@@ -21,13 +21,13 @@
     <Filter Include="Source Files\Application">
       <UniqueIdentifier>{3e2313d8-a7b5-4b51-985a-3a23d0c8e176}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\Application\States">
+      <UniqueIdentifier>{5e12eeb2-032e-44f7-be5e-c50aa146e60b}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\Utilities.cpp">
       <Filter>Source Files\Common</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Graphics.cpp">
-      <Filter>Source Files\Graphics</Filter>
     </ClCompile>
     <ClCompile Include="Source\D3D.cpp">
       <Filter>Source Files\Graphics</Filter>
@@ -44,6 +44,12 @@
     <ClCompile Include="Source\KeyBoardState.cpp">
       <Filter>Source Files\Common</Filter>
     </ClCompile>
+    <ClCompile Include="Source\StateStack.cpp">
+      <Filter>Source Files\Application\States</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\MainState.cpp">
+      <Filter>Source Files\Application\States</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Utilities.h">
@@ -57,9 +63,6 @@
     </ClInclude>
     <ClInclude Include="Source\WindowsInclude.h">
       <Filter>Source Files\Common\Includes</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Graphics.h">
-      <Filter>Source Files\Graphics</Filter>
     </ClInclude>
     <ClInclude Include="Source\D3D.h">
       <Filter>Source Files\Graphics</Filter>
@@ -75,6 +78,15 @@
     </ClInclude>
     <ClInclude Include="Source\KeyBoardState.h">
       <Filter>Source Files\Common</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\IBaseState.h">
+      <Filter>Source Files\Application\States</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\StateStack.h">
+      <Filter>Source Files\Application\States</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\MainState.h">
+      <Filter>Source Files\Application\States</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

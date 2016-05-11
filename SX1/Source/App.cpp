@@ -1,11 +1,19 @@
 //#include "stdafx.h"
 #include "App.h"
+#include "Utilities.h"
 #include "Input.h"
+#include "IBaseState.h"
+#include "MainState.h"
 
+const bool FULL_SCREEN = false;
+const bool VSYNC_ENABLED = true;
+const float SCREEN_DEPTH = 1000.0f;
+const float SCREEN_NEAR = 0.1f;
 
 App::App() 
 {
-	graphics = nullptr;
+	//graphics = nullptr;
+	d3d = nullptr;
 }
 
 App::~App() 
@@ -20,32 +28,26 @@ bool App::Initialize()
 
 	width = height = 0;
 
-	InitWindow( width, height );
+	InitWindow( width, height, FULL_SCREEN );
 
-	graphics = new Graphics;
-	if ( !graphics ) 
+	d3d = new D3D;
+
+	result = d3d->Initialize(width, height, VSYNC_ENABLED, hWnd, FULL_SCREEN, SCREEN_DEPTH, SCREEN_NEAR);
+
+	if (!result) 
 	{
+		MessageBox(hWnd, L"Could not initialize Direct3D", L"Error", MB_OK);
 		return false;
 	}
 
-	result = graphics->Initialize( width, height, hWnd );
-	if ( !result ) 
-	{
-		return false;
-	}
+	states.push(new MainState(d3d));
 
 	return true;
 }
 
 void App::Shutdown() 
 {
-	if ( graphics ) 
-	{
-		graphics->Shutdown();
-		delete graphics;
-		graphics = nullptr;
-	}
-
+	SAFE_SHUTDOWN(d3d);
 	ShutWindow();
 }
 
@@ -72,6 +74,9 @@ void App::Run()
 		}
 		else 
 		{
+			if (!Input())
+				done = true;
+
 			if ( !Update() )
 				done = true;
 
@@ -81,7 +86,7 @@ void App::Run()
 	}
 }
 
-bool App::Update()
+bool App::Input()
 {
 	Input::Update();
 	if (Input::KeyDown(VK_ESCAPE))
@@ -89,23 +94,21 @@ bool App::Update()
 		return false;
 	}
 
-	return true;
+
+	return states.front()->Input();
+}
+
+bool App::Update()
+{
+	return states.front()->Update();
 }
 
 bool App::Render()
 {
-	bool result;
-
-	result = graphics->Frame();
-	if (!result) 
-	{
-		return false;
-	}
-
-	return true;
+	return states.front()->Render();
 }
 
-void App::InitWindow( int& _width, int& _height ) 
+void App::InitWindow( int& _width, int& _height, bool _fs)
 {
 	WNDCLASSEX wc;
 	DEVMODE dmScreenSettings;
