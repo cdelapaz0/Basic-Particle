@@ -16,3 +16,8 @@ IBaseState * StateStack::front()
 		return nullptr;
 	return stack.front();
 }
+
+unsigned int StateStack::size() const
+{
+	return (unsigned int)stack.size();
+}

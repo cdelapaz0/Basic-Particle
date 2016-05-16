@@ -2,7 +2,8 @@
 #include "D3D.h"
 #include "Utilities.h"
 
-D3D::D3D() {
+D3D::D3D() 
+{
 	swapChain = nullptr;
 	device = nullptr;
 	deviceContext = nullptr;
@@ -11,9 +12,16 @@ D3D::D3D() {
 	depthStencilState = nullptr;
 	depthStencilView = nullptr;
 	rasterState = nullptr;
+
+	width = 0;
+	height = 0;
+
+	farPlane = 0;
+	nearPlane = 0;
 }
 
-D3D::~D3D() {
+D3D::~D3D() 
+{
 }
 
 bool D3D::Initialize( int _width, int _height, bool _vsync, HWND _hWnd, bool _fs, float _depth, float _near )
@@ -33,10 +41,7 @@ bool D3D::Initialize( int _width, int _height, bool _vsync, HWND _hWnd, bool _fs
 	D3D11_DEPTH_STENCIL_DESC depthStencilDesc;
 	D3D11_DEPTH_STENCIL_VIEW_DESC depthStencilViewDesc;
 	D3D11_RASTERIZER_DESC rasterDesc;
-	D3D11_VIEWPORT viewport;
-	float fieldOfView, screenAspect;
 	UINT flags;
-	//XMMATRIX world, orth, proj;
 	
 	vsyncEnabled = _fs;
 
@@ -130,6 +135,9 @@ bool D3D::Initialize( int _width, int _height, bool _vsync, HWND _hWnd, bool _fs
 	swapChainDesc.BufferDesc.Width = _width;
 	swapChainDesc.BufferDesc.Height = _height;
 
+	width = (float)_width;
+	height = (float)_height;
+
 	// Set regular 32-bit surface for the back buffer.
 	swapChainDesc.BufferDesc.Format = DXGI_FORMAT_R8G8B8A8_UNORM;
 
@@ -160,6 +168,8 @@ bool D3D::Initialize( int _width, int _height, bool _vsync, HWND _hWnd, bool _fs
 	else {
 		swapChainDesc.Windowed = true;
 	}
+
+	fullScreen = _fs;
 
 	// Set the scan line ordering and scaling to unspecified.
 	swapChainDesc.BufferDesc.ScanlineOrdering = DXGI_MODE_SCANLINE_ORDER_UNSPECIFIED;
@@ -297,37 +307,14 @@ bool D3D::Initialize( int _width, int _height, bool _vsync, HWND _hWnd, bool _fs
 	// Now set the rasterizer state.
 	deviceContext->RSSetState( rasterState );
 
-	// Setup the viewport for rendering.
-	viewport.Width = (float)_width;
-	viewport.Height = (float)_height;
-	viewport.MinDepth = 0.0f;
-	viewport.MaxDepth = 1.0f;
-	viewport.TopLeftX = 0.0f;
-	viewport.TopLeftY = 0.0f;
-
-	// Create the viewport.
-	deviceContext->RSSetViewports( 1, &viewport );
-
-	// Setup the projection matrix.
-	fieldOfView = (float)XM_PIDIV4;
-	screenAspect = (float)_width / (float)_height;
-
-	// Create the projection matrix for 3D rendering.
-	projectionMatrix = XMMatrixPerspectiveFovLH( fieldOfView,screenAspect, _near, _depth );
-	//XMStoreFloat4x4( &projectionMatrix, proj );
-
-	// Initialize the world matrix to the identity matrix.
-	worldMatrix = XMMatrixIdentity();
-	//XMStoreFloat4x4( &worldMatrix, world );
-
-	// Create an orthographic projection matrix for 2D rendering.
-	orthoMatrix = XMMatrixOrthographicLH((float)_width, (float)_height, _near, _depth );
-	//XMStoreFloat4x4( &orthoMatrix, orth );
+	farPlane = _depth;
+	nearPlane = _near;
 
 	return true;
 }
 
-void D3D::Shutdown() {
+void D3D::Shutdown() 
+{
 	// Before shutting down set to windowed mode or when you release the swap chain it will throw an exception.
 	if ( swapChain ) {
 		swapChain->SetFullscreenState( false, NULL );
@@ -356,15 +343,16 @@ void D3D::BeginScene(Color cc)
 	deviceContext->ClearRenderTargetView(renderTargetView, cc);
 
 	// Clear the depth buffer.
-	deviceContext->ClearDepthStencilView(depthStencilView,
-		D3D11_CLEAR_DEPTH, 1.0f, 0);
+	deviceContext->ClearDepthStencilView(depthStencilView, D3D11_CLEAR_DEPTH, 1.0f, 0);
 }
 
-void D3D::BeginScene( float r, float g, float b, float a ) {
+void D3D::BeginScene( float r, float g, float b, float a ) 
+{
 	BeginScene(Color(r, g, b, a));
 }
 
-void D3D::EndScene() {
+void D3D::EndScene() 
+{
 	// Present the back buffer to the screen since rendering is complete.
 	if ( vsyncEnabled ) {
 		// Lock to screen refresh rate.
@@ -376,27 +364,39 @@ void D3D::EndScene() {
 	}
 }
 
-ID3D11Device* D3D::GetDevice() {
+ID3D11Device* D3D::GetDevice() 
+{
 	return device;
 }
 
-ID3D11DeviceContext* D3D::GetDeviceContext() {
+ID3D11DeviceContext* D3D::GetDeviceContext() 
+{
 	return deviceContext;
 }
 
-Matrix D3D::GetProjectionMatrix( )
+float D3D::GetWidth()
 {
-	return projectionMatrix;
+	return width;
 }
 
-Matrix D3D::GetWorldMatrix()
+float D3D::GetHeight()
 {
-	return worldMatrix;
+	return height;
 }
 
-Matrix D3D::GetOrthoMatrix( )
+bool D3D::IsFullScreen()
 {
-	return orthoMatrix;
+	return fullScreen;
+}
+
+float D3D::GetFarPlane()
+{
+	return farPlane;
+}
+
+float D3D::GetNearPlane()
+{
+	return nearPlane;
 }
 
 void D3D::GetVideoCardInfo( char* cardName, int& memory ) {
@@ -404,14 +404,3 @@ void D3D::GetVideoCardInfo( char* cardName, int& memory ) {
 	memory = videoCardMemory;
 }
 
-//void* D3D::operator new( size_t size ) {
-//	void* storage = _aligned_malloc( size, 16 );
-//	if ( storage == nullptr ) {
-//		throw "Allocation fail : no memory";
-//	}
-//	return storage;
-//}
-//
-//void D3D::operator delete( void* ptr ) {
-//	_aligned_free( ptr );
-//}

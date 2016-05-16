@@ -1,7 +1,9 @@
 #pragma once
 
 #include "IBaseState.h"
+#include "D3DInclude.h"
 #include "DXTKInclude.h"
+#include "Camera.h"
 
 class D3D;
 
@@ -27,5 +29,7 @@ private:
 	D3D* pD3D;
 
 	Color clearColor;
+
+	Camera mainCamera;
 };
 

@@ -24,6 +24,12 @@
     <Filter Include="Source Files\Application\States">
       <UniqueIdentifier>{5e12eeb2-032e-44f7-be5e-c50aa146e60b}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\Graphics\Vertices">
+      <UniqueIdentifier>{45d338ae-2829-4a9b-9f92-43ab5c3ddc79}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Common\Input">
+      <UniqueIdentifier>{d97d6262-cfa3-4acb-94be-5f05b9f7de8a}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\Utilities.cpp">
@@ -32,23 +38,26 @@
     <ClCompile Include="Source\D3D.cpp">
       <Filter>Source Files\Graphics</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Input.cpp">
-      <Filter>Source Files\Common</Filter>
-    </ClCompile>
     <ClCompile Include="Source\App.cpp">
       <Filter>Source Files\Application</Filter>
     </ClCompile>
     <ClCompile Include="Source\WinMain.cpp">
       <Filter>Source Files\Application</Filter>
     </ClCompile>
-    <ClCompile Include="Source\KeyBoardState.cpp">
-      <Filter>Source Files\Common</Filter>
-    </ClCompile>
     <ClCompile Include="Source\StateStack.cpp">
       <Filter>Source Files\Application\States</Filter>
     </ClCompile>
     <ClCompile Include="Source\MainState.cpp">
       <Filter>Source Files\Application\States</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Input.cpp">
+      <Filter>Source Files\Common\Input</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\KeyBoardState.cpp">
+      <Filter>Source Files\Common\Input</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Camera.cpp">
+      <Filter>Source Files\Graphics</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -67,17 +76,11 @@
     <ClInclude Include="Source\D3D.h">
       <Filter>Source Files\Graphics</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Input.h">
-      <Filter>Source Files\Common</Filter>
-    </ClInclude>
     <ClInclude Include="Source\App.h">
       <Filter>Source Files\Application</Filter>
     </ClInclude>
     <ClInclude Include="Source\WinMain.h">
       <Filter>Source Files\Application</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\KeyBoardState.h">
-      <Filter>Source Files\Common</Filter>
     </ClInclude>
     <ClInclude Include="Source\IBaseState.h">
       <Filter>Source Files\Application\States</Filter>
@@ -88,5 +91,31 @@
     <ClInclude Include="Source\MainState.h">
       <Filter>Source Files\Application\States</Filter>
     </ClInclude>
+    <ClInclude Include="Source\Buffer.h">
+      <Filter>Source Files\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\ParticleVertex.h">
+      <Filter>Source Files\Graphics\Vertices</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Input.h">
+      <Filter>Source Files\Common\Input</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\KeyBoardState.h">
+      <Filter>Source Files\Common\Input</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Camera.h">
+      <Filter>Source Files\Graphics</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <FxCompile Include="Resource\ParticleVS.hlsl">
+      <Filter>Resource Files</Filter>
+    </FxCompile>
+    <FxCompile Include="Resource\ParticlePS.hlsl">
+      <Filter>Resource Files</Filter>
+    </FxCompile>
+    <FxCompile Include="Resource\ParticleGS.hlsl">
+      <Filter>Resource Files</Filter>
+    </FxCompile>
   </ItemGroup>
 </Project>

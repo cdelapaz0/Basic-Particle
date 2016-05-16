@@ -11,6 +11,8 @@ public:
 
 	IBaseState* front();
 
+	unsigned int size() const;
+
 private:
 	std::list<IBaseState*> stack;
 };

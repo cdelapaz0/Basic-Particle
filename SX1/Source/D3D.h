@@ -10,30 +10,37 @@ public:
 	D3D();
 	~D3D();
 
-	bool Initialize( int _width, int _height, bool _vsync, HWND _hWnd, bool _fs,
-					 float _depth, float _near );
+	bool Initialize(int _width, int _height, bool _vsync, HWND _hWnd, bool _fs, float _depth, float _near);
 	void Shutdown();
 
-	void BeginScene( Color cc );
-	void BeginScene( float r, float g, float b, float a );
+	void BeginScene(Color cc);
+	void BeginScene(float r, float g, float b, float a);
 	void EndScene();
 
 	ID3D11Device*			GetDevice();
 	ID3D11DeviceContext*	GetDeviceContext();
 
-	Matrix GetProjectionMatrix( );
-	Matrix GetWorldMatrix( );
-	Matrix GetOrthoMatrix( );
+	float GetWidth();
+	float GetHeight();
 
-	void GetVideoCardInfo( char* cardName, int& memory );
+	bool IsFullScreen();
+	float GetFarPlane();
+	float GetNearPlane();
 
-	//void* operator new( size_t size );
-	//void operator delete( void* ptr );
+	void GetVideoCardInfo(char* cardName, int& memory);
 
 private:
 	bool vsyncEnabled;
 	int videoCardMemory;
 	char videoCardDescription[128];
+
+	float width;
+	float height;
+
+	bool fullScreen;
+
+	float farPlane;
+	float nearPlane;
 
 	IDXGISwapChain*				swapChain;
 	ID3D11Device*				device;
@@ -43,8 +50,5 @@ private:
 	ID3D11DepthStencilState*	depthStencilState;
 	ID3D11DepthStencilView*		depthStencilView;
 	ID3D11RasterizerState*		rasterState;
-	Matrix						projectionMatrix;
-	Matrix						worldMatrix;
-	Matrix						orthoMatrix;
 };
 

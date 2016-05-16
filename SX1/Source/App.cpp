@@ -41,12 +41,20 @@ bool App::Initialize()
 	}
 
 	states.push(new MainState(d3d));
+	states.front()->Enter();
 
 	return true;
 }
 
 void App::Shutdown() 
 {
+	while(states.size() != 0)
+	{
+		states.front()->Exit();
+		delete states.front();
+		states.pop();
+	}
+
 	SAFE_SHUTDOWN(d3d);
 	ShutWindow();
 }
