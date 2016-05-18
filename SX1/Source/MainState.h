@@ -4,6 +4,7 @@
 #include "D3DInclude.h"
 #include "DXTKInclude.h"
 #include "Camera.h"
+#include "Buffer.h"
 
 class D3D;
 
@@ -29,7 +30,21 @@ private:
 	D3D* pD3D;
 
 	Color clearColor;
-
 	Camera mainCamera;
+
+	CameraCBuffer			cbufferCamera;
+	ObjectCBuffer			cbufferObject;
+
+
+	ID3D11Buffer*			vertexBuffer;
+	ID3D11VertexShader*		vertexShader;
+	ID3D11PixelShader*		pixelShader;
+	ID3D11GeometryShader*	geometryShader;
+
+	ID3D11InputLayout*		inputLayout;
+
+	ID3D11Buffer*			cameraCBuffer;
+	ID3D11Buffer*			objectCBuffer;
+
 };
 

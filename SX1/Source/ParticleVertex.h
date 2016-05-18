@@ -4,6 +4,7 @@
 
 struct ParticleVertex
 {
-	Vector4 Position;
-	float size;
+	Vector3 position;
+	Color	color;
+	float	size;
 };

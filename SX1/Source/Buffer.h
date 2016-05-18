@@ -1,11 +1,14 @@
 #pragma once
 
-#include "D3D.h"
+#include "D3DInclude.h"
 
-class Buffer
+struct CameraCBuffer
 {
-public:
-	
-private:
-	ID3D11Buffer * buffer;
+	Matrix viewMatrix;
+	Matrix projectionMatrix;
+};
+
+struct ObjectCBuffer
+{
+	Matrix worldMatrix;
 };

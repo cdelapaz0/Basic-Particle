@@ -104,12 +104,12 @@ void Camera::SetWorldMatrix(Matrix world)
 
 void Camera::SetOrthographicProjection(float _w, float _h, float _near, float _far)
 {
-	orthographicProjection = Matrix::CreateOrthographic(_w, _h, _near, _far);
+	orthographicProjection = XMMatrixOrthographicLH(_w, _h, _near, _far);
 }
 
 void Camera::SetPerspectiveProjection(float _fov, float _w, float _h, float _near, float _far)
 {
-	perspectiveProjection = Matrix::CreatePerspectiveFieldOfView(XMConvertToRadians(_fov), _w/_h, _near, _far);
+	perspectiveProjection = XMMatrixPerspectiveFovLH(XMConvertToRadians(_fov), _w/_h, _near, _far);
 }
 
 Matrix Camera::GetWorldMatrix()
