@@ -150,6 +150,7 @@
     <ClCompile Include="Source\Input.cpp" />
     <ClCompile Include="Source\KeyBoardState.cpp" />
     <ClCompile Include="Source\MainState.cpp" />
+    <ClCompile Include="Source\Particle.cpp" />
     <ClCompile Include="Source\ParticleEmitter.cpp" />
     <ClCompile Include="Source\StateStack.cpp" />
     <ClCompile Include="Source\Utilities.cpp" />
@@ -166,6 +167,8 @@
     <ClInclude Include="Source\Input.h" />
     <ClInclude Include="Source\KeyBoardState.h" />
     <ClInclude Include="Source\MainState.h" />
+    <ClInclude Include="Source\Particle.h" />
+    <ClInclude Include="Source\EmitterAttributes.h" />
     <ClInclude Include="Source\ParticleEmitter.h" />
     <ClInclude Include="Source\ParticleVertex.h" />
     <ClInclude Include="Source\StateStack.h" />
