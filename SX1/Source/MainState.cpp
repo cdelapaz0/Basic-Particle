@@ -216,7 +216,7 @@ bool MainState::Input()
 bool MainState::Update(float _fDT)
 {
 	//cbuff
-	emitter->Update(0.166f);
+	emitter->Update(_fDT);
 
 	return true;
 }
