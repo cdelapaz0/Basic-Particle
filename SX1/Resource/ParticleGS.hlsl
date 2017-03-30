@@ -13,15 +13,15 @@ struct GS_Input
 	float  size : SIZE;
 };
 
-//cbuffer Object : register(b0)
-//{
-//	float4x4 worldMatrix;
-//};
-
 cbuffer Camera : register(b0)
 {
 	float4x4 viewMatrix;
 	float4x4 projectionMatrix;
+};
+
+cbuffer Object : register(b1)
+{
+	float4x4 worldMatrix;
 };
 
 [maxvertexcount(6)]

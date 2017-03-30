@@ -5,6 +5,7 @@
 #include "DXTKInclude.h"
 #include "Camera.h"
 #include "Buffer.h"
+#include "ParticleEmitter.h"
 
 class D3D;
 
@@ -22,7 +23,7 @@ public:
 
 	virtual bool Input() override;
 
-	virtual bool Update() override;
+	virtual bool Update(float _fDT) override;
 
 	virtual bool Render() override;
 
@@ -37,6 +38,7 @@ private:
 
 
 	ID3D11Buffer*			vertexBuffer;
+	ID3D11Buffer*			emitterVertexBuffer;
 	ID3D11VertexShader*		vertexShader;
 	ID3D11PixelShader*		pixelShader;
 	ID3D11GeometryShader*	geometryShader;
@@ -45,6 +47,9 @@ private:
 
 	ID3D11Buffer*			cameraCBuffer;
 	ID3D11Buffer*			objectCBuffer;
+
+
+	ParticleEmitter*		emitter;
 
 };
 

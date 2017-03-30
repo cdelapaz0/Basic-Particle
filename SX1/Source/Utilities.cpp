@@ -65,3 +65,8 @@ float Random::NextFloat(float min, float max)
 	std::uniform_real_distribution<float> dis(min, max);
 	return dis(gen);
 }
+
+float Math::Lerp(float a, float b, float t)
+{
+	return (1 - t) * a + t * b;
+}

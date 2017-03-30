@@ -26,3 +26,10 @@ int WINAPI WinMain( HINSTANCE hInstance, HINSTANCE hPrevInstance, PSTR pScmdline
 
 	return 0;
 }
+
+#if _DEBUG
+int main()
+{
+	return WinMain(0,0,0,0);
+}
+#endif

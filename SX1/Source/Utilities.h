@@ -52,3 +52,8 @@ namespace String
 	std::wstring GetFilenameWithoutExt( std::wstring Filename );
 
 }
+
+namespace Math
+{
+	float Lerp(float a, float b, float t);
+}

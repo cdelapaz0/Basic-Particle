@@ -5,6 +5,13 @@
 #include "IBaseState.h"
 #include "MainState.h"
 
+#if _DEBUG
+
+#include <iostream>
+using std::cout;
+
+#endif
+
 const bool FULL_SCREEN = false;
 const bool VSYNC_ENABLED = true;
 const float SCREEN_DEPTH = 1000.0f;
@@ -42,6 +49,8 @@ bool App::Initialize()
 
 	states.push(new MainState(d3d));
 	states.front()->Enter();
+	
+	timer.Reset();
 
 	return true;
 }
@@ -106,9 +115,26 @@ bool App::Input()
 	return states.front()->Input();
 }
 
+#if _DEBUG
+
+void PrintDebugInfo(sxTimer& timer)
+{
+	LockWindowUpdate(GetConsoleWindow());
+	system("cls");
+	cout << "Elapsed Time: " << timer.GetTotalTime() << std::endl;
+	cout << "Delta Time: " << timer.GetDeltaTime() << std::endl;
+	LockWindowUpdate(NULL);
+	Sleep(10);
+}
+
+#endif
+
 bool App::Update()
 {
-	return states.front()->Update();
+	timer.Update();
+	PrintDebugInfo(timer);
+
+	return states.front()->Update(timer.GetDeltaTime());
 }
 
 bool App::Render()

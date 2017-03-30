@@ -3,6 +3,7 @@
 #include <Windows.h>
 #include "D3D.h"
 #include "StateStack.h"
+#include "Timer.h"
 
 class App
 {
@@ -30,6 +31,7 @@ private:
 	HINSTANCE	hInstance;
 	HWND		hWnd;
 
+	sxTimer		timer;
 	D3D*		d3d;
 	StateStack  states;
 };

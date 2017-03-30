@@ -18,7 +18,7 @@ public:
 	virtual void Exit() = 0;
 
 	virtual bool Input() = 0;
-	virtual bool Update() = 0;
+	virtual bool Update(float _fDT) = 0;
 	virtual bool Render() = 0;
 
 	StateID GetID() { return id; }

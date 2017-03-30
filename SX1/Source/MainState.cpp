@@ -10,6 +10,8 @@ MainState::MainState(D3D* _d3d) : IBaseState(StateID::Main)
 {
 	pD3D = _d3d;
 	clearColor = Colors::Black.v;
+	
+	emitter = nullptr;
 }
 
 MainState::~MainState()
@@ -171,6 +173,22 @@ void MainState::Enter()
 
 	pD3D->GetDevice()->CreateBuffer(&cbufferObjectDesc, &cbufferObjectData, &objectCBuffer);
 
+	/////// Emitter
+	D3D11_BUFFER_DESC emitterVertexBufferDesc;
+	ZeroMemory(&emitterVertexBufferDesc, sizeof(emitterVertexBufferDesc));
+
+	emitterVertexBufferDesc.Usage = D3D11_USAGE_DEFAULT;
+	emitterVertexBufferDesc.ByteWidth = sizeof(ParticleVertex) * 2;
+	emitterVertexBufferDesc.BindFlags = D3D11_BIND_VERTEX_BUFFER;
+	emitterVertexBufferDesc.CPUAccessFlags = 0;
+	emitterVertexBufferDesc.MiscFlags = 0;
+	emitterVertexBufferDesc.StructureByteStride = 0;
+
+	pD3D->GetDevice()->CreateBuffer(&emitterVertexBufferDesc, nullptr, &emitterVertexBuffer);
+
+	emitter = new ParticleEmitter();
+	emitter->Initialize(50, 2, 1, Colors::Red.v, Colors::Orange.v, Vector3(0, 1, 0), 
+		Vector3(0, 1, 0), Vector3(0, -2, 0), 1.0f, 1.4f);
 }
 
 void MainState::Exit()
@@ -195,9 +213,10 @@ bool MainState::Input()
 	return true;
 }
 
-bool MainState::Update()
+bool MainState::Update(float _fDT)
 {
 	//cbuff
+	emitter->Update(0.166f);
 
 	return true;
 }
@@ -214,7 +233,7 @@ bool MainState::Render()
 	pD3D->GetDeviceContext()->GSSetConstantBuffers(0, 1, &cameraCBuffer);
 
 	// Set Other Constant Buffers
-	// pD3D->GetDeviceContext()->GSSetConstantBuffers(0, 1, &objectCBuffer);
+	pD3D->GetDeviceContext()->GSSetConstantBuffers(1, 1, &objectCBuffer);
 
 	// Set Vertex/Index Buffers
 	unsigned int stride = sizeof(ParticleVertex);
