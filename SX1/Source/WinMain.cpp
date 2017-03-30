@@ -5,7 +5,10 @@
 #include "WinMain.h"
 #include "App.h"
 
-int WINAPI WinMain( HINSTANCE hInstance, HINSTANCE hPrevInstance, PSTR pScmdline, int iCmdshow ) {
+#include <vld.h>
+
+int WINAPI WinMain( HINSTANCE hInstance, HINSTANCE hPrevInstance, PSTR pScmdline, int iCmdshow ) 
+{
 	App* app;
 	bool result;
 

@@ -66,6 +66,12 @@ float Random::NextFloat(float min, float max)
 	return dis(gen);
 }
 
+//float Math::Lerp(float a, float b, float r)
+//{
+//	//v0 + t*(v1-v0)
+//	return a + r*(b - a);
+//}
+
 float Math::Lerp(float a, float b, float t)
 {
 	return (1 - t) * a + t * b;

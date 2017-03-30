@@ -42,6 +42,11 @@ namespace ColorTools
 	Color RandomColor();
 }
 
+namespace Math
+{
+	float Lerp(float a, float b, float r);
+}
+
 namespace String  
 {
 

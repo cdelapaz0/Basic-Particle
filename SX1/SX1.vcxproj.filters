@@ -65,6 +65,9 @@
     <ClCompile Include="Source\ParticleEmitter.cpp">
       <Filter>Source Files\Particles</Filter>
     </ClCompile>
+    <ClCompile Include="Source\Particle.cpp">
+      <Filter>Source Files\Particles</Filter>
+    </ClCompile>
     <ClCompile Include="Source\Timer.cpp">
       <Filter>Source Files\Common</Filter>
     </ClCompile>
@@ -121,6 +124,10 @@
     <ClInclude Include="Source\Particle.h">
       <Filter>Source Files\Particles</Filter>
     </ClInclude>
+    <ClInclude Include="Source\EmitterAttributes.h">
+      <Filter>Source Files\Particles</Filter>
+    </ClInclude>
+
     <ClInclude Include="Source\Timer.h">
       <Filter>Source Files\Common</Filter>
     </ClInclude>
