@@ -16,29 +16,45 @@ public:
 
 	void Initialize(unsigned int NumParticles, float startS, float endS,
 					Color startCol, Color endCol, Vector3 startV, Vector3 endV, 
-					Vector3 pos, float minLT, float maxLT);
+					Vector3 pos, float minLT, float maxLT, float spawnI, 
+					unsigned int spawnCount, float spawnW, float spawnH);
 
 	void Update(float _fdt);
 
-	void SetSizeRange(float startS, float endS);
-	void SetColorRange(Color startCol, Color endCol);
-	void SetVelocity(Vector3 startV, Vector3 endV);
+	// Particle Properties
+	void SetParticleSizeRange(float startS, float endS);
+	void SetParticleColorRange(Color startCol, Color endCol);
+	void SetParticleVelocityRange(Vector3 startV, Vector3 endV);
+	void SetParticleLifeTimeRange(float minLT, float maxLT);
+
+	// Emitter Properties
 	void SetPosition(Vector3 pos);
-	void SetLifeTime(float minLT, float maxLT);
+	void SetSpawnInterval(float spawnI);
+	void SetSpawnCount(float spawnCount);
+	void SetSpawnBounds(float width, float height);
+
+	const Matrix& GetWorldMatrix();
+	unsigned int  GetMaxParticleCount();
+	unsigned int  GetAliveCount();
+
+	ParticleVertex* GetVertexArray();
+	unsigned int	GetVertexArraySize();
 
 private:
-	// TODO: Add particle list
-	unsigned int aliveCount = 0;
-	unsigned int MaxParticles;
+	Matrix					worldMatrix;
 
-	float spawnInterval = 1.0f;
-	float elapsedTime = 0;
+	vector<Particle>		particles;
+	vector<ParticleVertex>	verts;
 
-	vector<Particle> particles;
-	
-	Matrix worldMatrix;
-	// TODO: Add Emission bounds
+	unsigned int			aliveCount;
+	unsigned int			maxParticlesCount;
 
+	float					spawnInterval;
+	unsigned int			spawnAmount;
+	float					elapsedTime;
+
+	float					boundWidth;
+	float					boundHeight;
 
 	// TODO: Make flyweight struct
 	float startSize;

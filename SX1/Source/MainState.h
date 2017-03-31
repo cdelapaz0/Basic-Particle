@@ -37,7 +37,8 @@ private:
 	ObjectCBuffer			cbufferObject;
 
 
-	ID3D11Buffer*			vertexBuffer;
+	//ID3D11Buffer*			vertexBuffer;
+
 	ID3D11Buffer*			emitterVertexBuffer;
 	ID3D11VertexShader*		vertexShader;
 	ID3D11PixelShader*		pixelShader;
@@ -47,7 +48,6 @@ private:
 
 	ID3D11Buffer*			cameraCBuffer;
 	ID3D11Buffer*			objectCBuffer;
-
 
 	ParticleEmitter*		emitter;
 

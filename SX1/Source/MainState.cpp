@@ -28,33 +28,33 @@ void MainState::Enter()
 	mainCamera.SetViewport(0.0f, 0.0f, pD3D->GetWidth(), pD3D->GetHeight());
 	mainCamera.SetPosition(Vector3(0, 0, -5));
 
-	//Init vertex buffer
-	ParticleVertex verts[2] = {};
-	verts[0].position = Vector3(0.0f, 2.0f, 0.0f);
-	verts[0].color = Colors::SkyBlue.v;
-	verts[0].size = 1;
+	////Init vertex buffer
+	//ParticleVertex verts[2] = {};
+	//verts[0].position = Vector3(0.0f, 2.0f, 0.0f);
+	//verts[0].color = Colors::SkyBlue.v;
+	//verts[0].size = 1;
 
-	verts[1].position = Vector3(0.0f, -2.0f, 5.0f);
-	verts[1].color = Colors::LimeGreen.v;
-	verts[1].size = 2;
+	//verts[1].position = Vector3(0.0f, -2.0f, 5.0f);
+	//verts[1].color = Colors::LimeGreen.v;
+	//verts[1].size = 2;
 
-	D3D11_BUFFER_DESC vertexBufferDesc;
-	ZeroMemory(&vertexBufferDesc, sizeof(vertexBufferDesc));
+	//D3D11_BUFFER_DESC vertexBufferDesc;
+	//ZeroMemory(&vertexBufferDesc, sizeof(vertexBufferDesc));
 
-	vertexBufferDesc.Usage = D3D11_USAGE_DEFAULT;
-	vertexBufferDesc.ByteWidth = sizeof(ParticleVertex) * 2;
-	vertexBufferDesc.BindFlags = D3D11_BIND_VERTEX_BUFFER;
-	vertexBufferDesc.CPUAccessFlags = 0;
-	vertexBufferDesc.MiscFlags = 0;
-	vertexBufferDesc.StructureByteStride = 0;
+	//vertexBufferDesc.Usage = D3D11_USAGE_DEFAULT;
+	//vertexBufferDesc.ByteWidth = sizeof(ParticleVertex) * 2;
+	//vertexBufferDesc.BindFlags = D3D11_BIND_VERTEX_BUFFER;
+	//vertexBufferDesc.CPUAccessFlags = 0;
+	//vertexBufferDesc.MiscFlags = 0;
+	//vertexBufferDesc.StructureByteStride = 0;
 
-	D3D11_SUBRESOURCE_DATA vertexBufferData;
-	ZeroMemory(&vertexBufferData, sizeof(vertexBufferData));
-	vertexBufferData.pSysMem = verts;
-	vertexBufferData.SysMemPitch = 0;
-	vertexBufferData.SysMemSlicePitch = 0;
+	//D3D11_SUBRESOURCE_DATA vertexBufferData;
+	//ZeroMemory(&vertexBufferData, sizeof(vertexBufferData));
+	//vertexBufferData.pSysMem = verts;
+	//vertexBufferData.SysMemPitch = 0;
+	//vertexBufferData.SysMemSlicePitch = 0;
 
-	pD3D->GetDevice()->CreateBuffer(&vertexBufferDesc, &vertexBufferData, &vertexBuffer);
+	//pD3D->GetDevice()->CreateBuffer(&vertexBufferDesc, &vertexBufferData, &vertexBuffer);
 
 	//Init shaders
 	HRESULT result;
@@ -152,7 +152,24 @@ void MainState::Enter()
 
 	pD3D->GetDevice()->CreateBuffer(&cbufferCameraDesc, &cbufferCameraData, &cameraCBuffer);
 
-	///////
+	emitter = new ParticleEmitter();
+	emitter->Initialize(200, .6, .2, Colors::Red.v, Colors::Orange.v, Vector3(0, 6, 0), 
+		Vector3(0, 0.5, 0), Vector3(0, -2, 0), 0.6f, 1.6f, .1f, 6, 2.5, .3);
+
+	/////// Emitter Vertex Buffer
+	D3D11_BUFFER_DESC emitterVertexBufferDesc;
+	ZeroMemory(&emitterVertexBufferDesc, sizeof(emitterVertexBufferDesc));
+
+	emitterVertexBufferDesc.Usage = D3D11_USAGE_DYNAMIC;
+	emitterVertexBufferDesc.ByteWidth = sizeof(ParticleVertex) * emitter->GetMaxParticleCount();
+	emitterVertexBufferDesc.BindFlags = D3D11_BIND_VERTEX_BUFFER;
+	emitterVertexBufferDesc.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;
+	emitterVertexBufferDesc.MiscFlags = 0;
+	emitterVertexBufferDesc.StructureByteStride = 0;
+
+	pD3D->GetDevice()->CreateBuffer(&emitterVertexBufferDesc, nullptr, &emitterVertexBuffer);
+
+	/////// Emitter Object Buffer
 	D3D11_BUFFER_DESC cbufferObjectDesc;
 	ZeroMemory(&cbufferObjectDesc, sizeof(cbufferObjectDesc));
 
@@ -163,7 +180,7 @@ void MainState::Enter()
 	cbufferObjectDesc.MiscFlags = 0;
 	cbufferObjectDesc.StructureByteStride = 0;
 
-	cbufferObject.worldMatrix = XMMatrixIdentity();
+	cbufferObject.worldMatrix = emitter->GetWorldMatrix();
 
 	D3D11_SUBRESOURCE_DATA cbufferObjectData;
 	ZeroMemory(&cbufferObjectData, sizeof(cbufferObjectData));
@@ -173,33 +190,19 @@ void MainState::Enter()
 
 	pD3D->GetDevice()->CreateBuffer(&cbufferObjectDesc, &cbufferObjectData, &objectCBuffer);
 
-	/////// Emitter
-	D3D11_BUFFER_DESC emitterVertexBufferDesc;
-	ZeroMemory(&emitterVertexBufferDesc, sizeof(emitterVertexBufferDesc));
-
-	emitterVertexBufferDesc.Usage = D3D11_USAGE_DEFAULT;
-	emitterVertexBufferDesc.ByteWidth = sizeof(ParticleVertex) * 2;
-	emitterVertexBufferDesc.BindFlags = D3D11_BIND_VERTEX_BUFFER;
-	emitterVertexBufferDesc.CPUAccessFlags = 0;
-	emitterVertexBufferDesc.MiscFlags = 0;
-	emitterVertexBufferDesc.StructureByteStride = 0;
-
-	pD3D->GetDevice()->CreateBuffer(&emitterVertexBufferDesc, nullptr, &emitterVertexBuffer);
-
-	emitter = new ParticleEmitter();
-	emitter->Initialize(50, 2, 1, Colors::Red.v, Colors::Orange.v, Vector3(0, 1, 0), 
-		Vector3(0, 1, 0), Vector3(0, -2, 0), 1.0f, 1.4f);
 }
 
 void MainState::Exit()
 {
+	SAFE_DELETE(emitter);
+
 	SAFE_RELEASE(objectCBuffer);
 	SAFE_RELEASE(cameraCBuffer);
 	SAFE_RELEASE(inputLayout);
 	SAFE_RELEASE(geometryShader);
 	SAFE_RELEASE(pixelShader);
 	SAFE_RELEASE(vertexShader);
-	SAFE_RELEASE(vertexBuffer);
+	SAFE_RELEASE(emitterVertexBuffer);
 }
 
 bool MainState::Input()
@@ -217,6 +220,13 @@ bool MainState::Update(float _fDT)
 {
 	//cbuff
 	emitter->Update(_fDT);
+
+	D3D11_MAPPED_SUBRESOURCE vertBufferSubResource;
+	ZeroMemory(&vertBufferSubResource, sizeof(D3D11_MAPPED_SUBRESOURCE));
+	pD3D->GetDeviceContext()->Map(emitterVertexBuffer, 0, D3D11_MAP_WRITE_DISCARD, 0, &vertBufferSubResource);
+	//ParticleVertex* p = emitter->GetVertices();
+	memcpy(vertBufferSubResource.pData, emitter->GetVertexArray(), emitter->GetVertexArraySize());
+	pD3D->GetDeviceContext()->Unmap(emitterVertexBuffer, 0);
 
 	return true;
 }
@@ -238,7 +248,7 @@ bool MainState::Render()
 	// Set Vertex/Index Buffers
 	unsigned int stride = sizeof(ParticleVertex);
 	unsigned int offset = 0;
-	pD3D->GetDeviceContext()->IASetVertexBuffers(0, 1, &vertexBuffer, &stride, &offset);
+	pD3D->GetDeviceContext()->IASetVertexBuffers(0, 1, &emitterVertexBuffer, &stride, &offset);
 
 	// Set Input Topology
 	pD3D->GetDeviceContext()->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_POINTLIST);
@@ -252,7 +262,7 @@ bool MainState::Render()
 	pD3D->GetDeviceContext()->PSSetShader(pixelShader, nullptr, 0);
 
 	// Draw
-	pD3D->GetDeviceContext()->Draw(2, 0);
+	pD3D->GetDeviceContext()->Draw(emitter->GetAliveCount(), 0);
 
 	pD3D->EndScene();
 
